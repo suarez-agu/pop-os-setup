@@ -1,15 +1,17 @@
+SCRIPT_DIR=$(pwd)
 sudo apt update && sudo apt upgrade -y
-sudo apt-get install -y vim tilix code zsh gnome-tweak-tool exa fzf ripgrep jq 
+sudo apt-get install -y vim tilix code zsh gnome-tweak-tool exa fzf ripgrep jq
 
 # Set up dotfiles
 git clone https://github.com/heuristicAL/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./script/bootstrap
-zsh
+cd $SCRIPT_DIR
 
 # Fix brightness for gmux_backlight
-echo "sudo setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0" >> ~/.profile
-source ~/.profile
+sudo cp mac_display.service /etc/systemd/system/mac_display.service
+systemctl enable mac_display.service
+systemctl start mac_display.service
 
 # Set up mac like gestures
 sudo apt-get install -y libinput-tools xdotool python3-setuptools
@@ -23,8 +25,8 @@ sudo ./libinput-gestures-setup install
 git clone https://gitlab.com/cunidev/gestures ~/.gestures
 cd ~/.gestures
 sudo python3 setup.py install
+cd $SCRIPT_DIR
 
-cd
 cp gestures.conf ~/.config/libinput-gestures.conf
 libinput-gestures-setup start
 libinput-gestures-setup autostart
