@@ -9,9 +9,10 @@ cd ~/.dotfiles
 cd $SCRIPT_DIR
 
 # Fix brightness for gmux_backlight
-sudo cp mac_display.service /etc/systemd/system/mac_display.service
-systemctl enable mac_display.service
-systemctl start mac_display.service
+BRIGHTNESS_SERVICE="geforce_gt_750m_brightness.service"
+sudo cp $BRIGHTNESS_SERVICE /etc/systemd/system/$BRIGHTNESS_SERVICE
+systemctl enable $BRIGHTNESS_SERVICE
+systemctl start $BRIGHTNESS_SERVICE
 
 # Set up mac like gestures
 sudo apt-get install -y libinput-tools xdotool python3-setuptools

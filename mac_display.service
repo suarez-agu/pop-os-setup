@@ -1,8 +1,0 @@
-[Unit]
-Description=Enable backlight control
-Wants=graphical.target
-After=graphical.target
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0
