@@ -1,18 +1,23 @@
 SCRIPT_DIR=$(pwd)
 sudo apt update && sudo apt upgrade -y
-sudo apt-get install -y vim tilix code zsh gnome-tweak-tool exa fzf ripgrep jq
+sudo apt-get install -y vim tilix code zsh gnome-tweak-tool exa fzf ripgrep jq\
+	htop
 
 # Set up dotfiles
 git clone https://github.com/heuristicAL/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
+echo "" > autoupdate/install.sh
 ./script/bootstrap
+sed -i 27d ~/.zshrc
 cd $SCRIPT_DIR
 
 # Fix brightness for gmux_backlight
-BRIGHTNESS_SERVICE="geforce_gt_750m_brightness.service"
-sudo cp $BRIGHTNESS_SERVICE /etc/systemd/system/$BRIGHTNESS_SERVICE
-systemctl enable $BRIGHTNESS_SERVICE
-systemctl start $BRIGHTNESS_SERVICE
+# This needs to be enabled only if using the NVIDIA Graphics option
+
+#BRIGHTNESS_SERVICE="geforce_gt_750m_brightness.service"
+#sudo cp $BRIGHTNESS_SERVICE /etc/systemd/system/$BRIGHTNESS_SERVICE
+#systemctl enable $BRIGHTNESS_SERVICE
+#systemctl start $BRIGHTNESS_SERVICE
 
 # Set up mac like gestures
 sudo apt-get install -y libinput-tools xdotool python3-setuptools
@@ -43,6 +48,8 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
     source /etc/profile.d/vte.sh
 fi
 EOT
+
+dconf load /com/gexperts/Tilix/ < tilix.dconf
 
 # Set git configs
 git config --global pull.ff only
